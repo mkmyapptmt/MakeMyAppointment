@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<!--The header section-->
+
+<head>
+    <title>MakeMyAppointment - Home</title>
+    <link href="css/blank_page_styles.css" rel="stylesheet" type="text/css" media="all" />
+    <script type="text/javascript" src="scripts/libs/jQuery/jquery-1.11.3.js" ></script>
+    <!--script to handle the on click of submit button-->
+    <script type="text/javascript">
+        function submitEmail(){
+            var em = $('#email').val();
+            if(em !== ''){
+                $.ajax({
+                    url:'/postUrl',
+                    type : 'POST',
+                    data : {email : em}
+                }).success(function(res){
+                    submitSuccess(res);       
+                }).fail(function(res){
+                    submitFail(res);   
+                });
+            }
+        }
+        
+        function submitSuccess(response){
+            //show a message the sibmission was successful and hide the input field
+            $('.input-region').hide();
+            $('.message-region').show();
+            $('.msg').append('<p>Submitted!!</p>');
+        }
+        
+        function submitFail(response){
+            console.log(response); 
+            $('.input-region').hide();
+            $('.message-region').show();
+            $('.msg').empty();
+            $('.msg').append('<p>Could not Submit. Please try again</p>');
+            setTimeout(function(){
+                $('.message-region').hide();
+                $('.msg').val('');
+                $('.input-region').show();
+                $('#email').val('');
+            },2000);
+        }
+    </script>
+</head>
+
+<body>
+    <div class="content">
+        <div class="wrap">
+            <div class="content-grid">
+                <p><img src="images/top.png" title="">
+                </p>
+            </div>
+            <div class="grid">
+                <p><img src="images/coming.png" title="">
+                </p>
+                <h3>We are Still Working on it.</h3>
+                <div class="input-region">
+                    <form>
+                        <input type="text" size="30" value="Your Email and Get Notified..." onblur="if (this.value=='') this.value = 'Your Email and Get Notified...'" onfocus="if (this.value=='Your Email and Get Notified...') this.value = ''" name="email" id="email">
+                            <button type="button" class="btn span btn-4 btn-4a icon-arrow-right" onclick="submitEmail()"><span></span>
+                            </button>
+                        <div id="response"></div>
+                    </form>
+                </div>
+                <div class="message-region" style="display:none">
+                    <div class="msg"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+            <div class="footer">
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</body>
+
+</html>
